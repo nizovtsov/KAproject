@@ -25,7 +25,7 @@ SECRET_KEY = '&dlt1)x%r!2qo&hxxwvgl60^-f0kmes9rj)9ncwov!uv-o*pfw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.kom-avto.ru', 'kom-avto.ru', '176.57.214.150']
 
 
 # Application definition
@@ -123,4 +123,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static/")
