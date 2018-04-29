@@ -14,6 +14,10 @@ def home_page(request):
 	if request.method == "POST":
 		print(request.POST)
 		print(request.POST.get('email'))
+		email = request.POST.get('email')
+		with open('emails.txt', 'a') as file:
+			file.write(email + '\n')
+
 	return render(request, "home_page.html", context)
 
 def about_page(request):
