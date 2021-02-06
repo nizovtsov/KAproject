@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class='text-center'>
+  <h1>{{ title }}</h1>
+
+</div>
+  <div class='row'>
+     <div class="col-xs-12 col-sm-12 col-md-12">
+      <p>{{ content }}</p>
+     </div>
+    <div class="col-xs-6 col-md-6">
+        <p align="center">Наши реквизиты:</p>
+        <span>ООО "Ком-Авто"</span><br>
+        <span>ИНН: 6713006729</span><br>
+        <span>КПП: 671301001</span><br>
+        <span>ОГРН: 1066713009439</span><br>
+        <span>Юр. адрес: 216790, Смоленская область, г. Рудня, ул. Киреева, д. 117-А, каб. 19, оф. 27</span><br>
+        <span>Р/С: 40702810243160000099</span><br>
+        <span>Смоленский РФ АО "РОССЕЛЬХОЗБАНК"</span><br>
+        <span>К/С: 30101810500000000776</span><br>
+        <span>БИК 046614776</span><br>
+        <p>Директор: Низовцов Евгений Геннадьевич</p>
+
+    </div>
+      <div class="col-xs-6 col-md-6">
+        <p>Мы дочерняя фирма производственного предприятия ООО "Спутник"</p>
+        <p>1</p>
+        <p>Отдел продаж находится по адресу: 212008, Республика Беларусь, г.Могилев, ул.Кулибина, д.27</p>
+        <p>Для связи можете воспользоваться контактным телефоном:</p>
+          <b><u>8 10 375 222 700 490</u> - отдел маркетинга</b>
+          <p>Или заполните форму обратной связи</p>
+      </div>
+  <div class="col-xs-6 col-md-6">
+      <h4 align="center"><u>Свяжитесь с нами</u></h4>
+          <form id="contactform" action="{% url 'contact' %}" method="POST"> {% csrf_token %}
+              {{ form }}
+              <input type="hidden" name="g-recaptcha-response" id='recaptcha'>
+              <button type="submit" class="btn btn-outline-primary btn-block">Отправить</button>
+          </form>
+
+<!--
+          <form method="POST"> {% csrf_token %}
+            <input type='text' class="form-control" placeholder="Name" name="fullname">
+            <input type='email' class="form-control" placeholder="Email" name="email">
+            <textarea name="content" class="form-control" placeholder="Your content"></textarea>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form> -->
+        </div>
+
+  </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+    <script>
+        grecaptcha.ready(function() {
+            $('#contactform').submit(function(e){
+                var form = this;
+                e.preventDefault()
+                grecaptcha.execute({{ site_key }}, {action: 'contactform'}).then(function(token) {
+                    $('#recaptcha').val(token)
+                    form.submit()
+                    });
+                })
+            });
+        </script>
+
+
+{% endblock %}
