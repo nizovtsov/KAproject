@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 import requests
+import json
+import urllib
+
+from django.conf import settings
+from django.core.mail import send_mail
 
 from .forms import ContactForm
 
@@ -25,6 +30,12 @@ def about_page(request):
     }
     return render(request, "home_page.html", context)
 
+def listToString(s):
+    # initialize an empty string
+    str1 = ' '.join(s)
+
+    # return string
+    return (str1)
 
 def contact_page(request):
     secret_key = settings.RECAPTCHA_SECRET_KEY
@@ -38,37 +49,45 @@ def contact_page(request):
     if contact_form.is_valid():
         print(contact_form.cleaned_data)
 
-    data = request.POST
-    data = {
-        'response': data.get('g-recaptcha-response'),
-        'secret': secret_key
-    }
-    resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-    result_json = resp.json()
-
-    print(data)
-    #print(result_json)
-
     if request.method == "POST":
-        #print(request.POST)
-        data = request.POST
-        data = {
-            'response': data.get('g-recaptcha-response'),
-            'secret': secret_key
+        ''' Begin reCAPTCHA validation '''
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        url = 'https://www.google.com/recaptcha/api/siteverify'
+        values = {
+            'secret': settings.RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
         }
-        print(data)
-        resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-        result_json = resp.json()
+        data = urllib.parse.urlencode(values).encode()
+        req = urllib.request.Request(url, data=data)
+        response = urllib.request.urlopen(req)
+        result = json.loads(response.read().decode())
+        ''' End reCAPTCHA validation '''
 
-        if not result_json.get('success'):
-            print('robot')
-            return render(request, 'home_page.html', {'is_robot': True})
+        if result['success']:
+            #print(request.POST)
+            sub = request.POST
+            subject = 'Welcome to DataFlair'
+            message = json.dumps(sub)
+            recepient = str('Email')
+            send_mail('Запрос. Сайт Ком-Авто', message, 'contact@kom-avto.ru', ['wren.systems@gmail.com'], fail_silently=False)
+            #send_mail(subject,
+             #         message, 'contact@kom-avto.ru', 'contact@kom-avto.ru', fail_silently=False)
+
+            print("ok")
+
+
+        else:
+            print("shit")
+
+
+        #if not result_json.get('success'):
+           # print('robot')
+          #  return render(request, 'home_page.html', {'is_robot': True})
         # end captcha verification
         # print(request.POST.get('fullname'))
         # print(request.POST.get('email'))
         #   print(request.POST.get('content'))
     return render(request, "contact/view.html", context)
-
 
 def home_page_old(request):
     html_ = """
