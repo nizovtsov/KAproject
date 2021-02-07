@@ -38,7 +38,11 @@
       <h4 align="center"><u>Свяжитесь с нами</u></h4>
           <form id="contactform" action="{% url 'contact' %}" method="POST"> {% csrf_token %}
               {{ form }}
-              <input type="hidden" name="g-recaptcha-response" id='recaptcha'>
+
+              <script src='https://www.google.com/recaptcha/api.js'></script>
+                <div class="g-recaptcha" data-sitekey={{ site_key }}></div>
+
+
               <button type="submit" class="btn btn-outline-primary btn-block">Отправить</button>
           </form>
 
@@ -54,21 +58,7 @@
   </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
-    <script>
-        grecaptcha.ready(function() {
-            $('#contactform').submit(function(e){
-                var form = this;
-                e.preventDefault()
-                grecaptcha.execute({{ site_key }}, {action: 'contactform'}).then(function(token) {
-                    $('#recaptcha').val(token)
-                    form.submit()
-                    });
-                })
-            });
-        </script>
+
 
 
 {% endblock %}

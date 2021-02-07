@@ -140,5 +140,21 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "media_root")
 
 
 #RECAPTCHA v3 test
-RECAPTCHA_SITE_KEY = "6Lf9gEwaAAAAAAfGa0SqfasQibPvRiCDhXhEHmcm"
-RECAPTCHA_SECRET_KEY = "6Lf9gEwaAAAAANfscMyUWpTWhYx89ECzDR7brpX8"
+RECAPTCHA_SITE_KEY = "6Lfj9E0aAAAAAOexQGPcaOdd8Aw4m7JjGqckoyXo"
+RECAPTCHA_SECRET_KEY = "6Lfj9E0aAAAAAEdcBa6c3ZJ0tsFJeb9Keqm5MUq6"
+
+# email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.timeweb.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "contact@kom-avto.ru"
+EMAIL_HOST_PASSWORD = "12qwaszx#$ERDFCV"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+SERVER_EMAIL = EMAIL_HOST_USER
+
+
+# contact@kom-avto.ru
+#12qwaszx#$ERDFCV
